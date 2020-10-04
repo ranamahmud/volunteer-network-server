@@ -16,55 +16,52 @@ app.get('/', (req, res) => {
     res.send("Hello Working db")
 })
 client.connect(err => {
-    const volunteersCollection = client.db(process.env.DB_NAME).collection("volunteers");
-    // const ordersCollection = client.db(process.env.DB_NAME).collection("orders");
-    // perform actions on the collection object
+    const activityCollection = client.db(process.env.DB_NAME).collection("activities");
 
     console.log("connected")
-    app.post('/addProduct', (req, res) => {
-        const products = req.body
-        productsCollection.insertOne(products)
+    app.post('/addActivity', (req, res) => {
+        const activity = req.body
+        activityCollection.insertOne(activity)
             .then(result => {
                 console.log(result.insertedCount)
-                res.send(result.insertedCount)
+                if (result.insertedCount > 0) {
+                    res.sendStatus(200)
+                } else {
+                    result.sendStatus(404)
+                }
             })
 
     })
 
-    app.get('/products', (req, res) => {
-        productsCollection.find({})
-            .toArray((err, documents) => {
-                res.send(documents)
-            })
-    })
 
 
-    app.get('/product/:key', (req, res) => {
-        productsCollection.find({ key: req.params.key })
-            .toArray((err, documents) => {
-                res.send(documents[0])
-            })
-    })
 
-    app.post('/productByKeys', (req, res) => {
-        const productKeys = req.body;
+    // app.get('/activity/:email', (req, res) => {
+    //     productsCollection.find({ email: req.params.key })
+    //         .toArray((err, documents) => {
+    //             res.send(documents[0])
+    //         })
+    // })
 
-        productsCollection.find({ key: { $in: productKeys } })
-            .toArray((err, documents) => {
-                console.log(documents)
-                res.send(documents)
-            })
-    })
+    // app.post('/productByKeys', (req, res) => {
+    //     const productKeys = req.body;
+
+    //     productsCollection.find({ key: { $in: productKeys } })
+    //         .toArray((err, documents) => {
+    //             console.log(documents)
+    //             res.send(documents)
+    //         })
+    // })
 
 
-    app.post('/addOrder', (req, res) => {
-        const order = req.body
-        ordersCollection.insertOne(order)
-            .then(result => {
-                res.send(result.insertedCount > 0)
-            })
+    // app.post('/addActivity', (req, res) => {
+    //     const order = req.body
+    //     ordersCollection.insertOne(order)
+    //         .then(result => {
+    //             res.send(result.insertedCount > 0)
+    //         })
 
-    })
+    // })
 
 
 });
