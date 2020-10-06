@@ -60,6 +60,13 @@ client.connect(err => {
             })
     })
 
+    app.get('/getAllEvents', (req, res) => {
+        activityCollection.find({})
+            .toArray((err, documents) => {
+                res.send(documents);
+            })
+    })
+
 
 
 
