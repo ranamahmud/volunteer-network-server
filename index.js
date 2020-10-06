@@ -19,6 +19,8 @@ client.connect(err => {
     const activityCollection = client.db(process.env.DB_NAME).collection("activities");
 
     console.log("connected")
+
+    // Event add post request
     app.post('/addActivity', (req, res) => {
         const activity = req.body
         activityCollection.insertOne(activity)
@@ -31,6 +33,15 @@ client.connect(err => {
                 }
             })
 
+    })
+
+    // Send all event data
+
+    app.get('/getEvents/:email', (req, res) => {
+        activityCollection.find({ email: req.params.email })
+            .toArray((err, documents) => {
+                res.send(documents);
+            })
     })
 
 
