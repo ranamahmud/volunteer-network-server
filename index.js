@@ -41,7 +41,6 @@ client.connect(err => {
         const activity = req.body
         activityCollection.insertOne(activity)
             .then(result => {
-                console.log("addactivity", result)
                 if (result.insertedCount > 0) {
                     res.sendStatus(200)
                 } else {
